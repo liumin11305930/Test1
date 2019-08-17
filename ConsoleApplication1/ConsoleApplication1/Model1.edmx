@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="net15Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Pid" />
+          </Key>
+          <Property Name="Pid" Type="int" Nullable="false" />
+          <Property Name="Pname" Type="varchar" MaxLength="50" />
+          <Property Name="Tid" Type="int" />
+        </EntityType>
+        <EntityType Name="PTypes">
+          <Key>
+            <PropertyRef Name="Tid" />
+          </Key>
+          <Property Name="Tid" Type="int" Nullable="false" />
+          <Property Name="Tname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Pid" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“net15.dbo.View_1”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="View_1">
+          <Property Name="Pname" Type="varchar" MaxLength="50" />
+          <Property Name="Tid" Type="int" />
+        </EntityType>-->
+        <Function Name="fenyeproc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="keyName" Type="varchar" Mode="In" />
+          <Parameter Name="tableName" Type="varchar" Mode="In" />
+          <Parameter Name="currentPage" Type="int" Mode="In" />
+          <Parameter Name="pages" Type="int" Mode="InOut" />
+          <Parameter Name="where" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="test2proc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="test3proc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="n" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="testProcedure" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="net15ModelStoreContainer">
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PTypes" EntityType="Self.PTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Types" EntityType="Self.Types" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="net15Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Pid" />
+          </Key>
+          <Property Name="Pid" Type="Int32" Nullable="false" />
+          <Property Name="Pname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PTypes">
+          <Key>
+            <PropertyRef Name="Tid" />
+          </Key>
+          <Property Name="Tid" Type="Int32" Nullable="false" />
+          <Property Name="Tname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pid" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="net15Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="PTypes" EntityType="Self.PTypes" />
+          <EntitySet Name="Types" EntityType="Self.Types" />
+          <FunctionImport Name="fenyeproc">
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="keyName" Mode="In" Type="String" />
+            <Parameter Name="tableName" Mode="In" Type="String" />
+            <Parameter Name="currentPage" Mode="In" Type="Int32" />
+            <Parameter Name="pages" Mode="InOut" Type="Int32" />
+            <Parameter Name="where" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="test2proc" ReturnType="Collection(net15Model.test2proc_Result)">
+            <Parameter Name="Name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="test3proc">
+            <Parameter Name="n" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="testProcedure" ReturnType="Collection(net15Model.testProcedure_Result)" />
+        </EntityContainer>
+        <ComplexType Name="test2proc_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Pid" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="testProcedure_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Pid" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="net15ModelStoreContainer" CdmEntityContainer="net15Entities">
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="net15Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+                <ScalarProperty Name="Pname" ColumnName="Pname" />
+                <ScalarProperty Name="Tid" ColumnName="Tid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PTypes">
+            <EntityTypeMapping TypeName="net15Model.PTypes">
+              <MappingFragment StoreEntitySet="PTypes">
+                <ScalarProperty Name="Tid" ColumnName="Tid" />
+                <ScalarProperty Name="Tname" ColumnName="Tname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Types">
+            <EntityTypeMapping TypeName="net15Model.Types">
+              <MappingFragment StoreEntitySet="Types">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="fenyeproc" FunctionName="net15Model.Store.fenyeproc" />
+          <FunctionImportMapping FunctionImportName="test2proc" FunctionName="net15Model.Store.test2proc">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="net15Model.test2proc_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="test3proc" FunctionName="net15Model.Store.test3proc" />
+          <FunctionImportMapping FunctionImportName="testProcedure" FunctionName="net15Model.Store.testProcedure">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="net15Model.testProcedure_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
